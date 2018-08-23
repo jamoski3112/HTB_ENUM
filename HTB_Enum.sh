@@ -1,17 +1,11 @@
 #!/bin/bash
 #
-## ----------------------------------
-# Step #1: Define variables
-# ----------------------------------
-EDITOR=vim
-PASSWD=/etc/passwd
+
 RED='\033[0;41;30m'
 STD='\033[0;0;39m'
 
  
-# ----------------------------------
-# Step #2: User defined function
-# ----------------------------------
+
 pause(){
   read -p "Press [Enter] key to continue..." fackEnterKey
 }
@@ -94,6 +88,11 @@ cron(){
   		old_process=$new_process
 	done
 }
+compile(){
+	echo -e "\e[44m ########## List all Compilers ########## \e[0m"
+	dpkg --list 2>/dev/null| grep compiler |grep -v decompiler 2>/dev/null && yum list installed 'gcc*' 2>/dev/null| grep gcc 2>/dev/null
+		pause
+}
 show_menus() {
 	clear
 	echo -e "
@@ -121,15 +120,13 @@ show_menus() {
 	echo "8. List Intresting Contents"
 	echo "9. SUID & GUID Binaries"
 	echo "10. Check Crons"
-	echo "11. Exit"
+	echo "11. List all compilers"
+	echo "12. Exit"
 }
-# read input from the keyboard and take a action
-# invoke the release() when the user select 1 from the menu option.
-# invoke the kernal() when the user select 2 from the menu option.
-# Exit when user the user select 3 form the menu option.
+
 read_options(){
 	local choice
-	read -p "Enter choice [ 1 - 10] " choice
+	read -p "Enter choice [ 1 - 12] " choice
 	case $choice in
 		1) release ;;
 		2) kernal ;;
@@ -141,19 +138,13 @@ read_options(){
 		8) dir ;;
 		9) sticky ;;
 		10) cron ;;
-		11) exit ;;
+		11) compile ;;
+		12) exit ;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
  
-# ----------------------------------------------
-# Step #3: Trap CTRL+C, CTRL+Z and quit singles
-# ----------------------------------------------
-# trap '' SIGINT SIGQUIT SIGTSTP
- 
-# -----------------------------------
-# Step #4: Main logic - infinite loop
-# ------------------------------------
+
 while true
 do
  
